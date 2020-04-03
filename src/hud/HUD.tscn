@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://src/hud/FPS.gd" type="Script" id=1]
+
+[node name="HUD" type="Node2D"]
+
+[node name="FPS" type="RichTextLabel" parent="."]
+margin_left = 937.0
+margin_top = 10.0
+margin_right = 1016.0
+margin_bottom = 65.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
