@@ -13,8 +13,12 @@ var _walk_acceleration = 0.0
 var _walk_deceleration = 0.0
 var _turn_deceleration = 0.0
 var _jump_initialvelocity = 0.0
-var _facing_right = true
 
+var _idle_timer = 0.0
+var _facing_right = true
+var _jumping = false
+var _falling = true
+var _animation_state
 
 func _ready():
 	### Setting these outside of ready scope causes the exported tuned values to not take effect
@@ -23,10 +27,18 @@ func _ready():
 	_turn_deceleration = -max_walk_speed / turn_ramp_down_time
 	_jump_initialvelocity = sqrt(2 * gravity * jump_height)
 	
+	_animation_state = $"Animation States".get("parameters/playback")
+	
 
 ### Horizontal movement
 func walk_right(dt):
 	_facing_right = true
+	$"sprite sheet".flip_h = false
+	_idle_timer = 0.0
+
+	if not _jumping or not _falling:
+		_animation_state.travel("walk")
+
 	if velocity.x >= 0:
 		velocity.x += _walk_acceleration * dt
 		velocity.x = min(velocity.x, max_walk_speed)
@@ -37,6 +49,12 @@ func walk_right(dt):
 
 func _walk_left(dt):
 	_facing_right = false
+	$"sprite sheet".flip_h = true
+	_idle_timer = 0.0
+
+	if not _jumping or not _falling:
+		_animation_state.travel("walk")
+
 	if velocity.x <= 0:
 		velocity.x += -_walk_acceleration * dt
 		velocity.x = max(velocity.x, -max_walk_speed)
@@ -45,7 +63,14 @@ func _walk_left(dt):
 		velocity.x = max(velocity.x, 0)
 
 
-func _stand_still(dt):
+func _idle(dt):
+	if not _jumping:
+		_idle_timer += dt
+		if _idle_timer > 1.0:
+			_animation_state.travel("idle2")
+		else:
+			_animation_state.travel("idle")
+
 	if velocity.x > 0:
 		velocity.x += _walk_deceleration * dt
 		velocity.x = max(velocity.x, 0)
@@ -56,8 +81,20 @@ func _stand_still(dt):
 
 ### Vertical movement
 func _jump(dt, strength):
-	if is_on_floor():
-		velocity.y = -_jump_initialvelocity * strength
+	_jumping = true
+	_animation_state.travel("jump")
+	velocity.y = -_jump_initialvelocity * strength
+	
+
+func _land(dt):
+	_jumping = false
+	_animation_state.travel("idle")
+
+
+func _fall(dt):
+	_jumping = false
+	_falling = true
+	_animation_state.travel("fall")
 
 
 ### Update the physics of the actor by dt
@@ -74,9 +111,15 @@ func _physics_process(dt):
 	elif right:
 		walk_right(dt)
 	else:
-		_stand_still(dt)
+		_idle(dt)
 
 	# Handle vertical movement
 	var jump_strength = Input.get_action_strength("jump")
-	if jump_strength:
+	if jump_strength and is_on_floor():
 		_jump(dt, jump_strength)
+	elif _jumping and is_on_floor():
+		_land(dt)
+	elif not _jumping and not is_on_floor():
+		_fall(dt)
+	
+	
