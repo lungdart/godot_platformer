@@ -9,6 +9,7 @@ export var turn_ramp_down_time = 0.1
 export var jump_height = 250.0
 export var strength = 1
 export var hp = 3
+export var iframes_time = 3.0
 
 ### Derived parameters
 var _walk_acceleration = 0.0
@@ -25,6 +26,8 @@ var _facing_right = true
 var _jumping = false
 var _falling = true
 var _current_hp = 0
+var _invincible = false
+var _iframes_counter = 0.0
 
 
 func _ready():
@@ -38,12 +41,24 @@ func _ready():
 	_sprite_sheet = $"sprite sheet"
 	_damage_cast = $"DamageCast"
 	
+	$"hitbox".connect("area_entered", self, "_on_hitbox_collision")
+	
 	_current_hp = hp
 	
 
 ### Got hit by an enemy
-func hit(value):
-	print("Got damaged: ", value)
+func _take_damage(strength):
+	_current_hp -= strength
+	if _current_hp <= 0:
+		_current_hp = 0
+		_die()
+		
+	_invincible = true
+
+
+func _die():
+	print("You died!")
+	queue_free()
 
 
 ### Horizontal movement
@@ -113,8 +128,21 @@ func _fall(dt):
 	_animation_state.travel("fall")
 
 
+func _on_hitbox_collision(other_area):
+	if other_area.collision_layer == 1 and not _invincible:
+		var enemy = other_area.get_parent()
+		_take_damage(enemy.strength)
+		
+
 ### Update the physics of the actor by dt
 func _physics_process(dt):
+	# Handle iframes
+	if _invincible:
+		_iframes_counter += dt
+		if _iframes_counter > iframes_time:
+			_invincible = false
+			_iframes_counter = 0.0
+
 	# Handle horinzontal movement
 	var left = Input.is_action_pressed("move_left")
 	var right = Input.is_action_pressed("move_right")
@@ -143,5 +171,3 @@ func _physics_process(dt):
 	if _damage_cast.is_colliding():
 		var object = _damage_cast.get_collider()
 		object.hit(strength)
-	
-	

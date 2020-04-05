@@ -6,6 +6,7 @@ export var sight_distance = 500
 export var walk_ramp_up_time = 0.2
 export var max_walk_speed = 100
 export var hp = 1
+export var strength = 1
 
 var _walk_acceleration = 0.0
 var _facing_right = true
@@ -39,8 +40,12 @@ func die():
 func _cast_to_player():
 	var direction = _player.global_position - _player_cast.global_position
 	_player_cast.set_cast_to(direction)
-	
-	return direction
+
+
+func _can_see_player():
+	if _player_cast.is_colliding() and _player_cast.cast_to.length() <= sight_distance:
+		return true
+	return false
 
 
 func _walk_right(dt):
@@ -75,8 +80,9 @@ func _idle(dt):
 
 
 func _physics_process(dt):
-	var direction = _cast_to_player()
-	if direction.length() < sight_distance and _player_cast.is_colliding():
+	_cast_to_player()
+	if _can_see_player():
+		var direction = _player_cast.cast_to.normalized()
 		if direction.x > 0:
 			_walk_right(dt)
 		elif direction.x < 0:

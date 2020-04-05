@@ -1,13 +1,16 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://src/actors/player/player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player.png" type="Texture" id=2]
 [ext_resource path="res://src/camera/Camera Position.gd" type="Script" id=3]
 
+[sub_resource type="RectangleShape2D" id=28]
+extents = Vector2( 58.892, 70.0318 )
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 21.3384, 46.076 )
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=24]
 resource_name = "fall"
 length = 0.001
 tracks/0/type = "value"
@@ -23,7 +26,7 @@ tracks/0/keys = {
 "values": [ 11 ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=25]
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite sheet:frame")
 tracks/0/interp = 1
@@ -37,7 +40,7 @@ tracks/0/keys = {
 "values": [ 0 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=26]
 resource_name = "idle2"
 length = 5.0
 loop = true
@@ -69,7 +72,7 @@ tracks/0/keys = {
 "values": [ 10 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=27]
 length = 0.4
 loop = true
 step = 0.05
@@ -145,16 +148,23 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 5
+frame = 11
 
-[node name="hitbox" type="CollisionShape2D" parent="."]
+[node name="hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2( 1.54001, -5.13344 )
+shape = SubResource( 28 )
+
+[node name="colid" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
 [node name="Animations" type="AnimationPlayer" parent="."]
-anims/fall = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/idle2 = SubResource( 4 )
+anims/fall = SubResource( 24 )
+anims/idle = SubResource( 25 )
+anims/idle2 = SubResource( 26 )
 anims/jump = SubResource( 5 )
-anims/walk = SubResource( 6 )
+anims/walk = SubResource( 27 )
 
 [node name="Animation States" type="AnimationTree" parent="."]
 tree_root = SubResource( 22 )
@@ -177,5 +187,4 @@ smoothing_speed = 3.0
 
 [node name="DamageCast" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 0, 50 )
 collision_mask = 2
