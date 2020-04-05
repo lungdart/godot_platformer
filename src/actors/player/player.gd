@@ -48,6 +48,7 @@ func _ready():
 
 ### Got hit by an enemy
 func _take_damage(strength):
+	print("You got hit!")
 	_current_hp -= strength
 	if _current_hp <= 0:
 		_current_hp = 0
@@ -58,7 +59,7 @@ func _take_damage(strength):
 
 func _die():
 	print("You died!")
-	queue_free()
+	#queue_free()
 
 
 ### Horizontal movement

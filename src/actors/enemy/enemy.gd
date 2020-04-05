@@ -12,6 +12,7 @@ var _walk_acceleration = 0.0
 var _facing_right = true
 var _player
 var _player_cast
+var _sprite_sheet
 var _current_hp
 var _dead = false
 
@@ -19,6 +20,7 @@ func _ready():
 	_walk_acceleration = max_walk_speed / walk_ramp_up_time
 	_player = $"../player"
 	_player_cast = $"player cast"
+	_sprite_sheet = $"sprite"
 	_current_hp = hp
 	
 	# Create a sight distance long cast, and just change the angle.
@@ -50,6 +52,7 @@ func _can_see_player():
 
 func _walk_right(dt):
 	_facing_right = true
+	_sprite_sheet.flip_h = true
 
 	if velocity.x >= 0:
 		velocity.x += _walk_acceleration * dt
@@ -61,6 +64,7 @@ func _walk_right(dt):
 
 func _walk_left(dt):
 	_facing_right = false
+	_sprite_sheet.flip_h = false
 
 	if velocity.x <= 0:
 		velocity.x += -_walk_acceleration * dt

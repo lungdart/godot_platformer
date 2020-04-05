@@ -5,7 +5,7 @@
 [ext_resource path="res://src/camera/Camera Position.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=28]
-extents = Vector2( 58.892, 70.0318 )
+extents = Vector2( 31.1715, 39.7446 )
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 21.3384, 46.076 )
@@ -148,15 +148,15 @@ script = ExtResource( 1 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 5
-frame = 11
 
 [node name="hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
-position = Vector2( 1.54001, -5.13344 )
+position = Vector2( 2.05338, -3.08005 )
 shape = SubResource( 28 )
 
 [node name="colid" type="CollisionShape2D" parent="."]
+position = Vector2( 2.56671, 2.05336 )
 shape = SubResource( 1 )
 
 [node name="Animations" type="AnimationPlayer" parent="."]
