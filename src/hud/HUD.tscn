@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/hud/FPS.gd" type="Script" id=1]
+[ext_resource path="res://assets/heart_full.png" type="Texture" id=2]
+[ext_resource path="res://assets/heart_empty.png" type="Texture" id=3]
 
 [node name="HUD" type="Node2D"]
 
@@ -13,3 +15,35 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Life" type="Node2D" parent="."]
+
+[node name="heart_full_0" type="Sprite" parent="Life"]
+position = Vector2( 50, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 2 )
+
+[node name="heart_full_1" type="Sprite" parent="Life"]
+position = Vector2( 150, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 2 )
+
+[node name="heart_full_2" type="Sprite" parent="Life"]
+position = Vector2( 250, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 2 )
+
+[node name="heart_empty_0" type="Sprite" parent="Life"]
+position = Vector2( 50, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 3 )
+
+[node name="heart_empty_1" type="Sprite" parent="Life"]
+position = Vector2( 150, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 3 )
+
+[node name="heart_empty_2" type="Sprite" parent="Life"]
+position = Vector2( 250, 50 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 3 )

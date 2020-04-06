@@ -21,6 +21,7 @@ var _jump_initialvelocity = 0.0
 var _animation_state
 var _sprite_sheet
 var _damage_cast
+var _life_meter
 
 var _facing_right = true
 var _jumping = false
@@ -42,6 +43,7 @@ func _ready():
 	_animation_state = $"Animation States".get("parameters/playback")
 	_sprite_sheet = $"sprite sheet"
 	_damage_cast = $"DamageCast"
+	_life_meter = $"../CanvasLayer/HUD/Life"
 	
 	$"hitbox".connect("area_entered", self, "_on_hitbox_collision")
 	
@@ -53,10 +55,14 @@ func _take_damage(strength):
 	_current_hp -= strength
 	if _current_hp <= 0:
 		_current_hp = 0
-		_die()
 		
-	_invincible = true
-	_animation_state.travel("hurt")
+	_set_life(_current_hp)
+
+	if _current_hp == 0:
+		_die()
+	else:
+		_invincible = true
+		_animation_state.travel("hurt")
 
 
 func _die():
@@ -64,6 +70,21 @@ func _die():
 	_animation_state.travel("death")
 	#queue_free()
 
+
+func _set_life(count):
+	var heart_0 = false
+	var heart_1 = false
+	var heart_2 = false
+	if _current_hp >= 1:
+		heart_0  = true
+	if _current_hp >= 2:
+		heart_1 = true
+	if _current_hp >= 3:
+		heart_2 = true
+		
+	_life_meter.get_node("heart_full_0").set_visible(heart_0)
+	_life_meter.get_node("heart_full_1").set_visible(heart_1)
+	_life_meter.get_node("heart_full_2").set_visible(heart_2)
 
 ### Horizontal movement
 func walk_right(dt):
