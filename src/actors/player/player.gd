@@ -9,7 +9,8 @@ export var turn_ramp_down_time = 0.1
 export var jump_height = 250.0
 export var strength = 1
 export var hp = 3
-export var iframes_time = 3.0
+export var idle_time = 5.0
+export var iframes_time = 1.5
 
 ### Derived parameters
 var _walk_acceleration = 0.0
@@ -21,13 +22,14 @@ var _animation_state
 var _sprite_sheet
 var _damage_cast
 
-var _idle_timer = 0.0
 var _facing_right = true
 var _jumping = false
 var _falling = true
 var _current_hp = 0
 var _invincible = false
+var _idle_counter = 0.0
 var _iframes_counter = 0.0
+var _flash_rate = 0.05
 
 
 func _ready():
@@ -48,17 +50,18 @@ func _ready():
 
 ### Got hit by an enemy
 func _take_damage(strength):
-	print("You got hit!")
 	_current_hp -= strength
 	if _current_hp <= 0:
 		_current_hp = 0
 		_die()
 		
 	_invincible = true
+	_animation_state.travel("hurt")
 
 
 func _die():
-	print("You died!")
+	print("died")
+	_animation_state.travel("death")
 	#queue_free()
 
 
@@ -66,7 +69,7 @@ func _die():
 func walk_right(dt):
 	_facing_right = true
 	_sprite_sheet.flip_h = false
-	_idle_timer = 0.0
+	_idle_counter = 0.0
 
 	if not _jumping or not _falling:
 		_animation_state.travel("walk")
@@ -82,7 +85,7 @@ func walk_right(dt):
 func _walk_left(dt):
 	_facing_right = false
 	_sprite_sheet.flip_h = true
-	_idle_timer = 0.0
+	_idle_counter = 0.0
 
 	if not _jumping or not _falling:
 		_animation_state.travel("walk")
@@ -97,8 +100,8 @@ func _walk_left(dt):
 
 func _idle(dt):
 	if not _jumping:
-		_idle_timer += dt
-		if _idle_timer > 1.0:
+		_idle_counter += dt
+		if _idle_counter > idle_time:
 			_animation_state.travel("idle2")
 		else:
 			_animation_state.travel("idle")
@@ -129,6 +132,17 @@ func _fall(dt):
 	_animation_state.travel("fall")
 
 
+func _flash(counter, reset=false):
+	if reset:
+		_sprite_sheet.set_modulate(Color(1.0, 1.0, 1.0, 1.0))
+		return
+
+	# Change opacity fully every 100ms
+	var frame = fmod(counter, _flash_rate)
+	var alpha = range_lerp(frame, 0, _flash_rate, 0.0, 1.0)
+	_sprite_sheet.set_modulate(Color(1.0, 1.0, 1.0, alpha))
+
+
 func _on_hitbox_collision(other_area):
 	if other_area.collision_layer == 1 and not _invincible:
 		var enemy = other_area.get_parent()
@@ -140,9 +154,12 @@ func _physics_process(dt):
 	# Handle iframes
 	if _invincible:
 		_iframes_counter += dt
+		_flash(_iframes_counter)
 		if _iframes_counter > iframes_time:
 			_invincible = false
 			_iframes_counter = 0.0
+			_flash(0, true)
+
 
 	# Handle horinzontal movement
 	var left = Input.is_action_pressed("move_left")

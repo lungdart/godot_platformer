@@ -1,17 +1,58 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://src/actors/player/player.gd" type="Script" id=1]
 [ext_resource path="res://assets/player.png" type="Texture" id=2]
 [ext_resource path="res://src/camera/Camera Position.gd" type="Script" id=3]
 
-[sub_resource type="RectangleShape2D" id=28]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31.1715, 39.7446 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 21.3384, 46.076 )
 
-[sub_resource type="Animation" id=24]
-resource_name = "fall"
+[sub_resource type="Animation" id=3]
+resource_name = "Death"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite sheet:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 11 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite sheet:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -90.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite sheet:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -25 ), Vector2( 0, 28 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "hurt"
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite sheet:frame")
@@ -26,7 +67,7 @@ tracks/0/keys = {
 "values": [ 11 ]
 }
 
-[sub_resource type="Animation" id=25]
+[sub_resource type="Animation" id=5]
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite sheet:frame")
 tracks/0/interp = 1
@@ -39,8 +80,44 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 0 ]
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite sheet:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite sheet:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite sheet:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=6]
 resource_name = "idle2"
 length = 5.0
 loop = true
@@ -57,7 +134,25 @@ tracks/0/keys = {
 "values": [ 2, 3, 4, 3, 2, 3, 4, 3 ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=27]
+resource_name = "invincible"
+length = 0.02
+loop = true
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite sheet:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.01 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=7]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/path = NodePath("sprite sheet:frame")
@@ -72,7 +167,7 @@ tracks/0/keys = {
 "values": [ 10 ]
 }
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=8]
 length = 0.4
 loop = true
 step = 0.05
@@ -89,24 +184,26 @@ tracks/0/keys = {
 "values": [ 5, 6, 7, 8, 9, 8, 7, 6 ]
 }
 
-[sub_resource type="AnimationNodeAnimation" id=7]
-animation = "fall"
+[sub_resource type="AnimationNodeAnimation" id=28]
+animation = "Death"
 
-[sub_resource type="AnimationNodeAnimation" id=8]
-animation = "idle"
+[sub_resource type="AnimationNodeAnimation" id=37]
+animation = "hurt"
 
-[sub_resource type="AnimationNodeAnimation" id=9]
-animation = "idle2"
+[sub_resource type="AnimationNodeAnimation" id=40]
+animation = "hurt"
 
 [sub_resource type="AnimationNodeAnimation" id=10]
-animation = "jump"
+animation = "idle"
 
 [sub_resource type="AnimationNodeAnimation" id=11]
+animation = "idle2"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "jump"
+
+[sub_resource type="AnimationNodeAnimation" id=13]
 animation = "walk"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=12]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=13]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=14]
 
@@ -124,21 +221,37 @@ animation = "walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=21]
 
-[sub_resource type="AnimationNodeStateMachine" id=22]
-states/fall/node = SubResource( 7 )
-states/fall/position = Vector2( 128, 194 )
-states/idle/node = SubResource( 8 )
-states/idle/position = Vector2( 344, 78 )
-states/idle2/node = SubResource( 9 )
-states/idle2/position = Vector2( 589, 78 )
-states/jump/node = SubResource( 10 )
-states/jump/position = Vector2( 589, 194 )
-states/walk/node = SubResource( 11 )
-states/walk/position = Vector2( 344, 194 )
-transitions = [ "idle", "idle2", SubResource( 12 ), "idle", "walk", SubResource( 13 ), "idle2", "walk", SubResource( 14 ), "walk", "idle", SubResource( 15 ), "walk", "jump", SubResource( 16 ), "idle", "jump", SubResource( 17 ), "idle2", "jump", SubResource( 18 ), "jump", "idle", SubResource( 19 ), "walk", "fall", SubResource( 20 ), "fall", "idle", SubResource( 21 ) ]
-start_node = "idle"
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=23]
+[sub_resource type="AnimationNodeStateMachineTransition" id=38]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=39]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=41]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=42]
+
+[sub_resource type="AnimationNodeStateMachine" id=24]
+states/death/node = SubResource( 28 )
+states/death/position = Vector2( 589, -11 )
+states/fall/node = SubResource( 37 )
+states/fall/position = Vector2( 115, 194 )
+states/hurt/node = SubResource( 40 )
+states/hurt/position = Vector2( 344, -41.5975 )
+states/idle/node = SubResource( 10 )
+states/idle/position = Vector2( 344, 78 )
+states/idle2/node = SubResource( 11 )
+states/idle2/position = Vector2( 589, 78 )
+states/jump/node = SubResource( 12 )
+states/jump/position = Vector2( 589, 194 )
+states/walk/node = SubResource( 13 )
+states/walk/position = Vector2( 344, 194 )
+transitions = [ "idle", "idle2", SubResource( 14 ), "idle", "walk", SubResource( 15 ), "idle2", "walk", SubResource( 16 ), "walk", "idle", SubResource( 17 ), "walk", "jump", SubResource( 18 ), "idle", "jump", SubResource( 19 ), "idle2", "jump", SubResource( 20 ), "jump", "idle", SubResource( 21 ), "idle", "death", SubResource( 34 ), "walk", "fall", SubResource( 38 ), "fall", "idle", SubResource( 39 ), "idle", "hurt", SubResource( 41 ), "hurt", "idle", SubResource( 42 ) ]
+start_node = "idle"
+end_node = "death"
+graph_offset = Vector2( -148, -112.597 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=25]
 
 [node name="player" type="KinematicBody2D"]
 collision_mask = 10
@@ -153,24 +266,26 @@ hframes = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
 position = Vector2( 2.05338, -3.08005 )
-shape = SubResource( 28 )
+shape = SubResource( 1 )
 
 [node name="colid" type="CollisionShape2D" parent="."]
 position = Vector2( 2.56671, 2.05336 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Animations" type="AnimationPlayer" parent="."]
-anims/fall = SubResource( 24 )
-anims/idle = SubResource( 25 )
-anims/idle2 = SubResource( 26 )
-anims/jump = SubResource( 5 )
-anims/walk = SubResource( 27 )
+anims/Death = SubResource( 3 )
+anims/hurt = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/idle2 = SubResource( 6 )
+anims/invincible = SubResource( 27 )
+anims/jump = SubResource( 7 )
+anims/walk = SubResource( 8 )
 
 [node name="Animation States" type="AnimationTree" parent="."]
-tree_root = SubResource( 22 )
+tree_root = SubResource( 24 )
 anim_player = NodePath("../Animations")
 active = true
-parameters/playback = SubResource( 23 )
+parameters/playback = SubResource( 25 )
 
 [node name="Camera Position" type="Position2D" parent="."]
 position = Vector2( 200, 0 )
