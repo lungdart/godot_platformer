@@ -13,6 +13,7 @@ var _facing_right = true
 var _player
 var _player_cast
 var _sprite_sheet
+var _kill_counter
 var _current_hp
 var _dead = false
 
@@ -21,6 +22,7 @@ func _ready():
 	_player = $"../player"
 	_player_cast = $"player cast"
 	_sprite_sheet = $"sprite"
+	_kill_counter = $"../CanvasLayer/HUD/Kills"
 	_current_hp = hp
 	
 	# Create a sight distance long cast, and just change the angle.
@@ -36,6 +38,7 @@ func hit(damage):
 
 
 func die():
+	_kill_counter.increment(1)
 	queue_free()
 
 

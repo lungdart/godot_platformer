@@ -22,6 +22,7 @@ var _animation_state
 var _sprite_sheet
 var _damage_cast
 var _life_meter
+var _kill_counter
 
 var _facing_right = true
 var _jumping = false
@@ -31,6 +32,8 @@ var _invincible = false
 var _idle_counter = 0.0
 var _iframes_counter = 0.0
 var _flash_rate = 0.05
+
+signal dead
 
 
 func _ready():
@@ -48,7 +51,6 @@ func _ready():
 	$"hitbox".connect("area_entered", self, "_on_hitbox_collision")
 	
 	_current_hp = hp
-	
 
 ### Got hit by an enemy
 func _take_damage(strength):
@@ -68,7 +70,6 @@ func _take_damage(strength):
 func _die():
 	print("died")
 	_animation_state.travel("death")
-	#queue_free()
 
 
 func _set_life(count):
@@ -172,6 +173,9 @@ func _on_hitbox_collision(other_area):
 
 ### Update the physics of the actor by dt
 func _physics_process(dt):
+	if _current_hp <= 0:
+		return
+
 	# Handle iframes
 	if _invincible:
 		_iframes_counter += dt

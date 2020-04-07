@@ -1,16 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/hud/FPS.gd" type="Script" id=1]
 [ext_resource path="res://assets/heart_full.png" type="Texture" id=2]
 [ext_resource path="res://assets/heart_empty.png" type="Texture" id=3]
+[ext_resource path="res://assets/font_default.tres" type="DynamicFont" id=4]
+[ext_resource path="res://src/hud/Kills.gd" type="Script" id=5]
 
 [node name="HUD" type="Node2D"]
 
 [node name="FPS" type="RichTextLabel" parent="."]
-margin_left = 937.0
-margin_top = 10.0
-margin_right = 1016.0
-margin_bottom = 65.0
+margin_left = 933.299
+margin_top = 13.7012
+margin_right = 1012.3
+margin_bottom = 68.7012
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -47,3 +49,15 @@ texture = ExtResource( 3 )
 position = Vector2( 250, 50 )
 scale = Vector2( 0.33, 0.33 )
 texture = ExtResource( 3 )
+
+[node name="Kills" type="RichTextLabel" parent="."]
+margin_left = 25.5969
+margin_top = 92.3389
+margin_right = 252.597
+margin_bottom = 132.339
+custom_fonts/normal_font = ExtResource( 4 )
+text = "Kills: 0"
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
