@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/font_default.tres" type="DynamicFont" id=1]
+[ext_resource path="res://src/Death.gd" type="Script" id=2]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://assets/montserrat_extrabold.otf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 64
+font_data = SubResource( 1 )
+
+[node name="Death Layer" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.192157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Death Label" type="RichTextLabel" parent="."]
+margin_left = 339.168
+margin_top = 166.815
+margin_right = 683.168
+margin_bottom = 246.815
+custom_fonts/normal_font = SubResource( 2 )
+custom_colors/default_color = Color( 0.678431, 0.0862745, 0.0862745, 1 )
+text = "You Died!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Total Kills" type="RichTextLabel" parent="."]
+margin_left = 421.0
+margin_top = 264.0
+margin_right = 677.0
+margin_bottom = 304.0
+custom_fonts/normal_font = ExtResource( 1 )
+text = "Total Kills: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -12,18 +12,7 @@ export var hp = 3
 export var idle_time = 5.0
 export var iframes_time = 1.5
 
-### Derived parameters
-var _walk_acceleration = 0.0
-var _walk_deceleration = 0.0
-var _turn_deceleration = 0.0
-var _jump_initialvelocity = 0.0
-
-var _animation_state
-var _sprite_sheet
-var _damage_cast
-var _life_meter
-var _kill_counter
-
+# Private paramters
 var _facing_right = true
 var _jumping = false
 var _falling = true
@@ -33,26 +22,30 @@ var _idle_counter = 0.0
 var _iframes_counter = 0.0
 var _flash_rate = 0.05
 
-signal dead
+### Derived parameters
+onready var _walk_acceleration = max_walk_speed / walk_ramp_up_time
+onready var _walk_deceleration = -max_walk_speed / walk_ramp_down_time
+onready var _turn_deceleration = -max_walk_speed / turn_ramp_down_time
+onready var _jump_initialvelocity = sqrt(2 * gravity * jump_height)
+
+# External resources
+onready var _animation_state = $"Animation States".get("parameters/playback")
+onready var _sprite_sheet = $"sprite sheet"
+onready var _damage_cast = $"DamageCast"
+onready var _life_meter = $"../HUD Canvas/HUD/Life"
+onready var _death_layer = $"Camera Position/Death Layer"
+onready var _kill_counter = $"../HUD Canvas/HUD/Kills"
+onready var _camera = $"Camera Position"
 
 
 func _ready():
 	### Setting these outside of ready scope causes the exported tuned values to not take effect
-	_walk_acceleration = max_walk_speed / walk_ramp_up_time
-	_walk_deceleration = -max_walk_speed / walk_ramp_down_time
-	_turn_deceleration = -max_walk_speed / turn_ramp_down_time
-	_jump_initialvelocity = sqrt(2 * gravity * jump_height)
-	
-	_animation_state = $"Animation States".get("parameters/playback")
-	_sprite_sheet = $"sprite sheet"
-	_damage_cast = $"DamageCast"
-	_life_meter = $"../CanvasLayer/HUD/Life"
 	
 	$"hitbox".connect("area_entered", self, "_on_hitbox_collision")
 	
 	_current_hp = hp
 
-### Got hit by an enemy
+
 func _take_damage(strength):
 	_current_hp -= strength
 	if _current_hp <= 0:
@@ -68,8 +61,10 @@ func _take_damage(strength):
 
 
 func _die():
-	print("died")
 	_animation_state.travel("death")
+	print(_kill_counter)
+	var kills = _kill_counter.kill_counter
+	_death_layer.activate(kills)
 
 
 func _set_life(count):

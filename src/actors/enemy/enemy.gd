@@ -22,7 +22,7 @@ func _ready():
 	_player = $"../player"
 	_player_cast = $"player cast"
 	_sprite_sheet = $"sprite"
-	_kill_counter = $"../CanvasLayer/HUD/Kills"
+	_kill_counter = $"../HUD Canvas/HUD/Kills"
 	_current_hp = hp
 	
 	# Create a sight distance long cast, and just change the angle.
