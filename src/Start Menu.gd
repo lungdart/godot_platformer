@@ -16,6 +16,7 @@ func _on_Quit_button_up():
 func _ready():
 	select($Control/Start)
 
+
 func select(button):
 	selected = button
 	button.grab_focus()

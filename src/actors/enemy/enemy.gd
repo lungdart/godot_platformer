@@ -10,20 +10,18 @@ export var strength = 1
 
 var _walk_acceleration = 0.0
 var _facing_right = true
-var _player
-var _player_cast
-var _sprite_sheet
-var _kill_counter
-var _current_hp
 var _dead = false
+
+onready var _player = $"../../player"
+onready var _player_cast = $"player cast"
+onready var _sprite_sheet = $"sprite"
+onready var _kill_counter = $"../../HUD Canvas/HUD/Kills"
+onready var _current_hp = hp
+
 
 func _ready():
 	_walk_acceleration = max_walk_speed / walk_ramp_up_time
-	_player = $"../player"
-	_player_cast = $"player cast"
-	_sprite_sheet = $"sprite"
-	_kill_counter = $"../HUD Canvas/HUD/Kills"
-	_current_hp = hp
+
 	
 	# Create a sight distance long cast, and just change the angle.
 	#  this prevents translating co-ordinates
@@ -39,7 +37,9 @@ func hit(damage):
 
 func die():
 	_kill_counter.increment(1)
+	get_parent().spawn_new(2)
 	queue_free()
+	
 
 
 func _cast_to_player():

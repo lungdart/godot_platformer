@@ -16,7 +16,6 @@ export var iframes_time = 1.5
 var _facing_right = true
 var _jumping = false
 var _falling = true
-var _current_hp = 0
 var _invincible = false
 var _idle_counter = 0.0
 var _iframes_counter = 0.0
@@ -27,6 +26,7 @@ onready var _walk_acceleration = max_walk_speed / walk_ramp_up_time
 onready var _walk_deceleration = -max_walk_speed / walk_ramp_down_time
 onready var _turn_deceleration = -max_walk_speed / turn_ramp_down_time
 onready var _jump_initialvelocity = sqrt(2 * gravity * jump_height)
+onready var _current_hp = hp
 
 # External resources
 onready var _animation_state = $"Animation States".get("parameters/playback")
@@ -39,11 +39,7 @@ onready var _camera = $"Camera Position"
 
 
 func _ready():
-	### Setting these outside of ready scope causes the exported tuned values to not take effect
-	
 	$"hitbox".connect("area_entered", self, "_on_hitbox_collision")
-	
-	_current_hp = hp
 
 
 func _take_damage(strength):
