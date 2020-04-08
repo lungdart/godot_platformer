@@ -182,8 +182,8 @@ func _physics_process(dt):
 
 
 	# Handle horinzontal movement
-	var left = Input.is_action_pressed("move_left")
-	var right = Input.is_action_pressed("move_right")
+	var left = Input.is_action_pressed("left")
+	var right = Input.is_action_pressed("right")
 	if left and right:
 		left = false
 		right = false

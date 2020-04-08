@@ -306,7 +306,3 @@ smoothing_enabled = true
 smoothing_speed = 3.0
 
 [node name="Death Layer" parent="Camera Position" instance=ExtResource( 4 )]
-margin_left = -200.18
-margin_top = 1.75812
-margin_right = -200.18
-margin_bottom = 1.75812
